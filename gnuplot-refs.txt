@@ -1,0 +1,62 @@
+gnuplot reference
+mar-07
+
+plot data:
+	plot "file.dat" ti "Energy spectrum" index 0:0 using 1:2
+	#index indicates blocks of data to plot
+	#(first block is index 0)
+	# blocks are separated by 2 blank lines
+	#using a:b = plot columns a and b
+
+	splot "file.dat" using 1:2:3
+	#3-d plot
+
+	plot "file.dat" index 0:1 using 1:2:3 with yerrorbars
+	#use column 3 as y-errors
+
+	plot "file.dat" index 0:1 using 1:2:3:4 with yerrorbars
+	#y has a range of col3 and col4
+
+	plot "file.dat" index 0:1 using 1:2:3:4 with xyerrorbars
+	#plot both x-errors and y-errors
+
+	plot "file.dat" index 0:1 using 1:2:3:4 with xyerrorbars, \
+	"file2.dat" using 2:3, "file3.dat" using 4:3 ti 'data2',\
+	"file4.dat" using 2:5 ti 'data4', sin(x) ti 'sine(x)' 
+	# use backslash to continue long line
+
+styling:
+	set logscale x
+	#use log scale on x axis
+
+	set xlabel "E (MeV)"
+	
+	plot "file.dat" with [points, boxes, steps, lines, linespoints]
+	#different plot styles
+	
+	#histogram styles:
+	#	steps: data points are used as initial position
+	#	fsteps: data points are used as final position
+	#	histeps: data points are used as central position
+	show pointsize
+	set pointsize 2
+	set grid
+	unset grid
+
+fit data to function:
+	f(x) = a*exp(-b*x/c**2)
+	a = 2.0 
+	fit f(x) "file.dat" using 1:2 via b,c
+	plot f(x),"file.dat" using 1:2
+
+save file:
+	set term [png, postscript, x11, aqua, ..etc]
+	set output "plot.[png,eps]"
+	replot
+	save "plot.plt"
+	set term x11 
+	set output
+
+------------
+roppon picha
+
